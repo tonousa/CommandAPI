@@ -18,6 +18,8 @@ namespace CommandAPI.Controllers
 
         public CommandsController(ICommandAPIRepo repository, IMapper mapper)
         {
+            Debug.WriteLine("+++++CONSTRUCTOR");
+
             _repository = repository;
             _mapper = mapper;
         }

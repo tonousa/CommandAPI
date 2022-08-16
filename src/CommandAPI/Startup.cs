@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using AutoMapper;
 using Newtonsoft.Json.Serialization;
+using System.Diagnostics;
 
 namespace CommandAPI
 {
@@ -29,6 +30,10 @@ namespace CommandAPI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            Trace.WriteLine("+++++ConfigureServices");
+            Debug.WriteLine("+++++ConfigureServices");
+            Console.WriteLine("+++++ConfigureServices console");
+
             var builder = new NpgsqlConnectionStringBuilder();
             builder.ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection");
             builder.Username = Configuration["UserID"];
