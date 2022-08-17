@@ -284,7 +284,7 @@ namespace CommandAPI.Tests
 
             // Then
             // Assert.IsType<NotFoundResult>(result);
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NotFoundResult>(result);
         }
 
 
