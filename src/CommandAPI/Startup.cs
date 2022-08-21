@@ -14,6 +14,7 @@ using Npgsql;
 using AutoMapper;
 using Newtonsoft.Json.Serialization;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CommandAPI
 {
@@ -32,7 +33,7 @@ namespace CommandAPI
         {
             Trace.WriteLine("+++++ConfigureServices");
             Debug.WriteLine("+++++ConfigureServices");
-            Console.WriteLine("+++++ConfigureServices console");
+            Console.WriteLine("+++++ConfigureServices console.writeline()");
 
             var builder = new NpgsqlConnectionStringBuilder();
             builder.ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection");
@@ -40,6 +41,13 @@ namespace CommandAPI
             builder.Password = Configuration["Password"];
 
             services.AddDbContext<CommandContext>(opt => opt.UseNpgsql(builder.ConnectionString));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => 
+            {
+                opt.Audience = Configuration["ResourceId"];
+                opt.Authority = $"{Configuration["Instance"]}{Configuration["TenantId"]}";
+                opt.RequireHttpsMetadata = false;
+            });
 
             services.AddControllers().AddNewtonsoftJson(s => 
             {
@@ -64,6 +72,9 @@ namespace CommandAPI
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
